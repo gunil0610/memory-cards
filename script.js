@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const cardsContainer = document.getElementById('cards-container'),
-    prevBtn = document.getElementById('prev'),
-    nextBtn = document.getElementById('next'),
-    currentEl = document.getElementById('current'),
-    showBtn = document.getElementById('show'),
-    hideBtn = document.getElementById('hide'),
-    questionEl = document.getElementById('question'),
-    answerEl = document.getElementById('answer'),
-    addCardBtn = document.getElementById('add-card'),
-    clearBtn = document.getElementById('clear'),
-    addContainer = document.getElementById('add-container');
+const cardsContainer = document.getElementById("cards-container"),
+  prevBtn = document.getElementById("prev"),
+  nextBtn = document.getElementById("next"),
+  currentEl = document.getElementById("current"),
+  showBtn = document.getElementById("show"),
+  hideBtn = document.getElementById("hide"),
+  questionEl = document.getElementById("question"),
+  answerEl = document.getElementById("answer"),
+  addCardBtn = document.getElementById("add-card"),
+  clearBtn = document.getElementById("clear"),
+  addContainer = document.getElementById("add-container");
 
 // Keep track of current card
 let currentActiveCard = 0;
@@ -36,19 +36,19 @@ const cardsData = getCardsData();
 
 // Create all cards
 function createCards() {
-    cardsData.forEach((data, index) => createCard(data, index));
+  cardsData.forEach((data, index) => createCard(data, index));
 }
 
 // Create a single card in DOM
 function createCard(data, index) {
-    const card = document.createElement('div');
-    card.classList.add('card');
+  const card = document.createElement("div");
+  card.classList.add("card");
 
-    if (index === 0) {
-        card.classList.add('active');
-    }
+  if (index === 0) {
+    card.classList.add("active");
+  }
 
-    card.innerHTML = `
+  card.innerHTML = `
     <div class="inner-card">
         <div class="inner-card-front">
             <p>
@@ -63,31 +63,31 @@ function createCard(data, index) {
     </div>
     `;
 
-    card.addEventListener('click', () => card.classList.toggle('show-answer'));
+  card.addEventListener("click", () => card.classList.toggle("show-answer"));
 
-    // Add to DOM cards
-    cardsEl.push(card);
+  // Add to DOM cards
+  cardsEl.push(card);
 
-    cardsContainer.appendChild(card);
+  cardsContainer.appendChild(card);
 
-    updateCurrentText();
+  updateCurrentText();
 }
 
 // Show number of cards
 function updateCurrentText() {
-    currentEl.innerText = `${currentActiveCard + 1}/${cardsEl.length}`;
+  currentEl.innerText = `${currentActiveCard + 1}/${cardsEl.length}`;
 }
 
 // Get cards from local storage
 function getCardsData() {
-    const cards = JSON.parse(localStorage.getItem('cards'));
-    return cards === null ? [] : cards;
+  const cards = JSON.parse(localStorage.getItem("cards"));
+  return cards === null ? [] : cards;
 }
 
 // Add cards to local storage
 function setCardsData(cards) {
-    localStorage.setItem('cards', JSON.stringify(cards));
-    window.location.reload();
+  localStorage.setItem("cards", JSON.stringify(cards));
+  window.location.reload();
 }
 
 createCards();
@@ -95,67 +95,67 @@ createCards();
 // Event listeners
 
 // Next Button
-nextBtn.addEventListener('click', () => {
-    cardsEl[currentActiveCard].className = 'card left';
+nextBtn.addEventListener("click", () => {
+  cardsEl[currentActiveCard].className = "card left";
 
-    currentActiveCard = currentActiveCard + 1;
+  currentActiveCard = currentActiveCard + 1;
 
-    if (currentActiveCard > cardsEl.length - 1) {
-        currentActiveCard = cardsEl.length - 1;
-    }
+  if (currentActiveCard > cardsEl.length - 1) {
+    currentActiveCard = cardsEl.length - 1;
+  }
 
-    cardsEl[currentActiveCard].className = 'card active';
+  cardsEl[currentActiveCard].className = "card active";
 
-    updateCurrentText();
+  updateCurrentText();
 });
 
 // Previous Button
-prevBtn.addEventListener('click', () => {
-    cardsEl[currentActiveCard].className = 'card right';
+prevBtn.addEventListener("click", () => {
+  cardsEl[currentActiveCard].className = "card right";
 
-    currentActiveCard = currentActiveCard - 1;
+  currentActiveCard = currentActiveCard - 1;
 
-    if (currentActiveCard < 0) {
-        currentActiveCard = 0;
-    }
+  if (currentActiveCard < 0) {
+    currentActiveCard = 0;
+  }
 
-    cardsEl[currentActiveCard].className = 'card active';
+  cardsEl[currentActiveCard].className = "card active";
 
-    updateCurrentText();
+  updateCurrentText();
 });
 
 // Show add container
-showBtn.addEventListener('click', () => addContainer.classList.add('show'));
+showBtn.addEventListener("click", () => addContainer.classList.add("show"));
 
 // Hide add container
-hideBtn.addEventListener('click', () => addContainer.classList.remove('show'));
+hideBtn.addEventListener("click", () => addContainer.classList.remove("show"));
 
 // Add new card
-addCardBtn.addEventListener('click', () => {
-    const question = questionEl.value;
-    const answer = answerEl.value;
+addCardBtn.addEventListener("click", () => {
+  const question = questionEl.value;
+  const answer = answerEl.value;
 
-    if (question.trim() && answer.trim()) {
-        const newCard = {
-            question,
-            answer
-        };
+  if (question.trim() && answer.trim()) {
+    const newCard = {
+      question,
+      answer,
+    };
 
-        createCard(newCard);
+    createCard(newCard);
 
-        questionEl.value = '';
-        answerEl.value = '';
+    questionEl.value = "";
+    answerEl.value = "";
 
-        addContainer.classList.remove('show');
+    addContainer.classList.remove("show");
 
-        cardsData.push(newCard);
-        setCardsData(cardsData);
-    }
-})
+    cardsData.push(newCard);
+    setCardsData(cardsData);
+  }
+});
 
 // Clear cards button
-clearBtn.addEventListener('click', () => {
-    localStorage.clear();
-    cardsContainer.innerHTML = '';
-    window.location.reload();
-})
+clearBtn.addEventListener("click", () => {
+  localStorage.clear();
+  cardsContainer.innerHTML = "";
+  window.location.reload();
+});
